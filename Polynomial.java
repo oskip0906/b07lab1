@@ -18,11 +18,11 @@ public class Polynomial {
 		double[] c1;
 		double[] c2;
 		if (coefficients.length >= p.coefficients.length) {
-			c1 = coefficients;
-			c2 = p.coefficients;
+			c1 = coefficients.clone();
+			c2 = p.coefficients.clone();
 		} else {
-			c1 = p.coefficients;
-			c2 = coefficients;
+			c1 = p.coefficients.clone();
+			c2 = coefficients.clone();
 		}
 		for (int i = 0; i < c1.length; i++) {
 			if (i < c2.length) {
@@ -41,8 +41,7 @@ public class Polynomial {
 	}
 
 	public boolean hasRoot(double d) {
-		return evaluate(d) == 0;
-
+		return Math.abs(evaluate(d)) < 1e-15;
 	}
 
 }
