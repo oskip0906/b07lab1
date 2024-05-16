@@ -35,7 +35,7 @@ public class Polynomial {
 	public double evaluate(double x) {
 		double result = 0;
 		for (int i = 0; i < coefficients.length; i++) {
-			result += Math.pow(x, i + 1) * coefficients[i];
+			result += Math.pow(x, i) * coefficients[i];
 		}
 		return result;
 	}
