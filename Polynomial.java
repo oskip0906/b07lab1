@@ -27,13 +27,16 @@ public class Polynomial {
 			Scanner scanner = new Scanner(file);
 			String data = scanner.nextLine();
 			data = data.replace("-", "+-");
+			if (data.charAt(0) == '+') {
+				data = data.substring(1);
+			}
 			String[] terms = data.split("[+]");
 			coefficients = new double[terms.length];
 			exponents = new int[terms.length];
-			if (terms.length > 0 && !terms[0].contains("x")) {
-				terms[0] = terms[0] + "x0";
-			}
 			for (int i = 0; i < terms.length; i++) {
+				if (!terms[i].contains("x")) {
+					terms[i] = terms[i] + "x0";
+				}
 				String[] temp = terms[i].split("[x]");
 				coefficients[i] = Double.parseDouble(temp[0]);
 				exponents[i] = Integer.parseInt(temp[1]);
