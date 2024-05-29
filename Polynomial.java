@@ -44,7 +44,7 @@ public class Polynomial {
 			scanner.close();
 		}
 		catch (Exception e) {
-			System.out.println("Error!");
+			System.out.println(e);
 		}
 	}
 
@@ -64,8 +64,9 @@ public class Polynomial {
 				}
 			}
 			writer.close();
-		} catch (Exception e) {
-			System.out.println("Error!");
+		} 
+		catch (Exception e) {
+			System.out.println(e);
 		}
 	}
 
