@@ -52,14 +52,13 @@ public class Polynomial {
 		try {
 			FileWriter writer = new FileWriter(file_name);
 			for (int i = 0; i < coefficients.length; i++) {
+				if (i != 0 && coefficients[i] > 0) {
+					writer.write("+");
+				}
 				if (exponents[i] == 0) {
 					writer.write(Double.toString(coefficients[i]));
-
 				}
 				else {
-					if (coefficients[i] > 0 && i != 0) {
-						writer.write("+");
-					}
 					writer.write(Double.toString(coefficients[i]) + "x" + Integer.toString(exponents[i]));
 				}
 			}
