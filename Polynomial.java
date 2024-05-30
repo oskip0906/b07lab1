@@ -70,53 +70,66 @@ public class Polynomial {
 		}
 	}
 
-	public int num_common(int[] arr1, int[] arr2) {
-		int common = 0;
-		for (int i = 0; i < arr1.length; i++) {
-			for (int j = 0; j < arr2.length; j++) {
-				if (arr1[i] == arr2[j]) {
-					common++;
-					break;
+	public int getIndex(int[] array, int element) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1; 
+	}
+
+	public int[] getExponents(int[] exponents1, int[] exponents2, double[] coefficients1, double[] coefficients2) {
+		int[] combined = new int[exponents1.length + exponents2.length];
+		for (int i = 0; i < exponents1.length; i++) {
+			combined[i] = exponents1[i];
+		}
+		for (int i = 0; i < exponents2.length; i++) {
+			combined[i + exponents1.length] = exponents2[i];
+		}
+		int unique = combined.length;
+		for (int i = 0; i < combined.length; i++) {
+			for (int j = i + 1; j < combined.length; j++) {
+				if (combined[i] == combined[j] && combined[i] != -1) {
+					combined[j] = -1;
+					unique--;
+				}
+			}
+			int index1 = getIndex(exponents1, combined[i]);
+			int index2 = getIndex(exponents2, combined[i]);
+			if (index1 != -1 && index2 != -1) {
+				if (coefficients1[index1] + coefficients2[index2] == 0.0) {
+					combined[i] = -1;
+					unique--;
 				}
 			}
 		}
-		return common;
+		int[] exponents = new int[unique];
+		int index = 0;
+		for (int i = 0; i < combined.length; i++) {
+			if (combined[i] != -1) {
+				exponents[index] = combined[i];
+				index++;
+			}
+		}
+		return exponents;
 	}
 
 	public Polynomial add(Polynomial p) {
-		int unique = exponents.length + p.exponents.length - num_common(exponents, p.exponents);
-		int[] new_exponents = new int[unique];
-		double[] new_coefficients = new double[unique];
-		int e1 = 0;
-		int e2 = 0;
-		for (int i = 0; i < unique; i++) {
-			if (e1 == exponents.length) {
-				new_coefficients[i] = p.coefficients[e2];
-				new_exponents[i] = p.exponents[e2];
-				e2++;
+		int[] new_exponents = getExponents(exponents, p.exponents, coefficients, p.coefficients);
+		double[] new_coefficients = new double[new_exponents.length];
+		for (int i = 0; i < new_exponents.length; i++) {
+			int exponent = new_exponents[i];
+			int index1 = getIndex(exponents, exponent);
+			int index2 = getIndex(p.exponents, exponent);
+			if (index1 != -1 && index2 != -1) {
+				new_coefficients[i] = coefficients[index1] + p.coefficients[index2];
 			}
-			else if (e2 == p.exponents.length) {
-				new_coefficients[i] = coefficients[e1];
-				new_exponents[i] = exponents[e1];
-				e1++;
-			}
-			else if (exponents[e1] == p.exponents[e2]){
-				new_coefficients[i] = coefficients[e1] + p.coefficients[e2];
-				new_exponents[i] = exponents[e1];
-				e1++;
-				e2++;
+			else if (index1 != -1) {
+				new_coefficients[i] = coefficients[index1];
 			}
 			else {
-				if (exponents[e1] < p.exponents[e2]) {
-					new_coefficients[i] = coefficients[e1];
-					new_exponents[i] = exponents[e1];
-					e1++;
-				}
-				else {
-					new_coefficients[i] = p.coefficients[e2];
-					new_exponents[i] = p.exponents[e2];
-					e2++;
-				}
+				new_coefficients[i] = p.coefficients[index2];
 			}
 		}
 		return new Polynomial(new_coefficients, new_exponents);
