@@ -64,7 +64,7 @@ public class Polynomial {
 				}
 			}
 			writer.close();
-		} 
+		}
 		catch (Exception e) {
 			System.out.println(e);
 		}
@@ -76,7 +76,7 @@ public class Polynomial {
 				return i;
 			}
 		}
-		return -1; 
+		return -1;
 	}
 
 	public int[] getExponents(int[] exponents1, int[] exponents2, double[] coefficients1, double[] coefficients2) {
@@ -97,8 +97,16 @@ public class Polynomial {
 			}
 			int index1 = getIndex(exponents1, combined[i]);
 			int index2 = getIndex(exponents2, combined[i]);
-			if (index1 != -1 && index2 != -1) {
-				if (coefficients1[index1] + coefficients2[index2] == 0.0) {
+			if (index1 != -1 || index2 != -1) {
+				double c1 = 0;
+				double c2 = 0;
+				if (index1 != -1) {
+					c1 = coefficients1[index1];
+				}
+				if (index2 != -1) {
+					c2 = coefficients2[index2];
+				}
+				if (Math.abs(c1 + c2) < 1e-15) {
 					combined[i] = -1;
 					unique--;
 				}
