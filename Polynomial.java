@@ -57,7 +57,7 @@ public class Polynomial {
 
 				}
 				else {
-					if (coefficients[i] > 0) {
+					if (coefficients[i] > 0 && i != 0) {
 						writer.write("+");
 					}
 					writer.write(Double.toString(coefficients[i]) + "x" + Integer.toString(exponents[i]));
